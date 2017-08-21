@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CustomerAppDAL;
 using CustomerAppEntity;
@@ -10,7 +11,15 @@ namespace CustomerAppBLL.Services
     {
         public Customer CreateCustomer(Customer customerToCreate)
         {
-            return FakeDB.CreateCustomer(customerToCreate);
+            Customer newCustomer;
+            FakeDB.Customers.Add(newCustomer = new Customer()
+            {
+                Id = FakeDB.Id++,
+                FirstName = customerToCreate.FirstName,
+                LastName = customerToCreate.LastName,
+                Address = customerToCreate.Address
+            });
+            return newCustomer;
         }
 
         public IEnumerable<Customer> GetAllCustomers()
@@ -20,22 +29,26 @@ namespace CustomerAppBLL.Services
 
         public Customer GetCustomerById(int id)
         {
-            return FakeDB.Customers.Find(c => c.Id == id);
+            return FakeDB.Customers.FirstOrDefault(c => c.Id == id);
         }
 
         public Customer UpdateCustomer(Customer updatedCustomer)
         {
-            var customerToUpdate = GetCustomerById(updatedCustomer.Id);
-            customerToUpdate.Address = updatedCustomer.Address;
-            customerToUpdate.FirstName = updatedCustomer.FirstName;
-            customerToUpdate.LastName = updatedCustomer.LastName;
-            return customerToUpdate;
+            var customerFromDb = GetCustomerById(updatedCustomer.Id);
+            if (customerFromDb == null) throw new InvalidOperationException("Customer doesn't exist in DB");
+
+            customerFromDb.FirstName = updatedCustomer.FirstName;
+            customerFromDb.LastName = updatedCustomer.LastName;
+            customerFromDb.Address = updatedCustomer.Address;
+            return customerFromDb;
         }
 
         public bool DeleteCustomer(int id)
         {
-            var customerToRemove = GetCustomerById(id);
-            return FakeDB.Customers.Remove(customerToRemove);
+            var customerToDelete = GetCustomerById(id);
+            if (customerToDelete == null) return false;
+            FakeDB.Customers.Remove(customerToDelete);
+            return true;
         }
     }
 }

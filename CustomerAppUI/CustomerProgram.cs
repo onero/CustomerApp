@@ -3,207 +3,171 @@ using System.Linq;
 using CustomerAppBLL;
 using CustomerAppBLL.Services;
 using CustomerAppEntity;
-using CustomerAppUI.Model;
 
 namespace CustomerAppUI
 {
-    internal static class CustomerProgram
+    static class CustomerProgram
     {
-        private static bool _userDone;
-        private static readonly MenuModel MenuModel = new MenuModel();
-        private static readonly CustomerModel CustomerModel = new CustomerModel();
+        private static readonly BllFacade BllFacade = new BllFacade();
 
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
-            Console.WriteLine();
-            while (!_userDone)
+            var customer1 = new Customer()
             {
-                MenuService.DisplayMenu(MenuModel.MenuItems);
+                FirstName = "Bob",
+                LastName = "Dylan",
+                Address = "BongoStreet 202"
+            };
+            BllFacade.CustomerService.CreateCustomer(customer1);
 
-                var userSelection = MenuService.GetUserMenuSelection(MenuModel.MenuItems.Length);
+            var customer2 = new Customer()
+            {
+                FirstName = "Lars",
+                LastName = "Bilde",
+                Address = "Ostestrasse 202"
+            };
+            BllFacade.CustomerService.CreateCustomer(customer2);
 
-                ReactToUserInput(userSelection);
+            string[] menuItems =
+            {
+                "List All Customers",
+                "Add Customer",
+                "Delete Customer",
+                "Edit Customer",
+                "Exit"
+            };
+
+            //Show Menu
+            //Wait for Selection
+            // - Show selection or
+            // - Warning and go back to menu
+
+            var selection = ShowMenu(menuItems);
+
+            while (selection != 5)
+            {
+                switch (selection)
+                {
+                    case 1:
+                        ListCustomers();
+                        break;
+                    case 2:
+                        AddCustomers();
+                        break;
+                    case 3:
+                        ListCustomers();
+                        DeleteCustomer();
+                        break;
+                    case 4:
+                        ListCustomers();
+                        EditCustomer();
+                        break;
+                    default:
+                        break;
+                }
+                selection = ShowMenu(menuItems);
+            }
+            Console.WriteLine("Bye bye!");
+
+            Console.ReadLine();
+        }
+
+        private static void EditCustomer()
+        {
+            var customer = FindCustomerById();
+            if (customer != null)
+            {
+                Console.WriteLine("FirstName: ");
+                customer.FirstName = Console.ReadLine();
+                Console.WriteLine("LastName: ");
+                customer.LastName = Console.ReadLine();
+                Console.WriteLine("Address: ");
+                customer.Address = Console.ReadLine();
+
+                BllFacade.CustomerService.UpdateCustomer(customer);
+            }
+            else
+            {
+                Console.WriteLine("Customer not Found!");
             }
         }
 
         /// <summary>
-        /// Carry out action related to user selection
+        /// 
         /// </summary>
-        /// <param name="userSelection"></param>
-        private static void ReactToUserInput(int userSelection)
+        /// <returns>kdjfjkdf</returns>
+        private static Customer FindCustomerById()
         {
-            switch (userSelection)
+            Console.WriteLine("Insert Customer Id: ");
+            int id;
+            while (!int.TryParse(Console.ReadLine(), out id))
             {
-                case 1:
-                    Console.WriteLine("Exiting program, goodbye!");
-                    _userDone = true;
-                    break;
-                case 2:
-                    ListAllCustomers();
-                    break;
-                case 3:
-                    DisplayAddCustomer();
-                    break;
-                case 4:
-                    DisplayDeleteCustomer();
-                    break;
-                case 5:
-                    DisplayEditCustomer();
-                    break;
-                case 6:
-                    SearchForCustomer();
-                    break;
-                default:
-                    throw new ArgumentException("Not a valid command!");
+                Console.WriteLine("Please insert a number");
             }
-
-            Console.WriteLine();
+            return BllFacade.CustomerService.GetCustomerById(id);
         }
 
-        private static void SearchForCustomer()
+        private static void DeleteCustomer()
         {
-            Console.WriteLine($"Please enter a name to search for");
-            var searchString = MenuService.GetValidString();
-            var customerFromSearch = CustomerModel.SearchForCustomerName(searchString);
-            DisplayCustomerInfo(customerFromSearch);
-        }
-
-        private static void DisplayCustomerInfo(Customer customerFromSearch)
-        {
-            Console.WriteLine($"Id: {customerFromSearch.Id} Name: {customerFromSearch.GetFullName()} Address: {customerFromSearch.Address}");
-        }
-
-        /// <summary>
-        /// Give user option to edit a customer
-        /// </summary>
-        private static void DisplayEditCustomer()
-        {
-            ListAllCustomers();
-
-            Console.WriteLine();
-
-            if (CustomerModel.GetAllCustomers().Any())
+            var customerFound = FindCustomerById();
+            if (customerFound != null)
             {
-                var customerToEdit = PromptForCustomerId();
-
-                Console.WriteLine("Please select one of following options:");
-                Console.WriteLine("1: Change full name");
-                Console.WriteLine("2: Change address");
-
-                var selection = MenuService.GetUserMenuSelection(2);
-
-                if (selection == 1)
-                {
-                    Console.Write("Please write first name: ");
-                    customerToEdit.FirstName = MenuService.GetValidString();
-                    Console.Write("Please write last name: ");
-                    customerToEdit.LastName = MenuService.GetValidString();
-                }
-                else if (selection == 2)
-                {
-                    Console.Write("Please write address: ");
-                    customerToEdit.Address = Console.ReadLine();
-                }
-
-                CustomerModel.UpdateCustomer(customerToEdit);
-
-                Console.WriteLine("New customer info:");
-
-                DisplayCustomerInfo(customerToEdit);
+                BllFacade.CustomerService.DeleteCustomer(customerFound.Id);
+            }
+            else
+            {
+                Console.WriteLine("Customer not Found");
             }
         }
 
-        /// <summary>
-        /// Prompt the user for a customer id and validate existance
-        /// </summary>
-        /// <returns>Customer from parsed id</returns>
-        private static Customer PromptForCustomerId()
+        private static void AddCustomers()
         {
-            Customer customerToEdit;
-            bool validCustomerId = false;
-            do
-            {
-                Console.WriteLine("Please write id of customer:");
+            Console.WriteLine("Firstname: ");
+            var firstName = Console.ReadLine();
 
-                var customerIdInput = MenuService.GetValidInteger();
+            Console.WriteLine("Lastname: ");
+            var lastName = Console.ReadLine();
 
-                customerToEdit = CustomerModel.GetCustomerById(customerIdInput);
+            Console.WriteLine("Address: ");
+            var address = Console.ReadLine();
 
-                if (customerToEdit != null)
-                {
-                    validCustomerId = true;
-                }
-                else
-                {
-                    Console.WriteLine($"Sorry Id: {customerIdInput} is not a valid id");
-                }
-            } while (!validCustomerId);
-            return customerToEdit;
-        }
-
-        /// <summary>
-        /// Give user option to delete a customer
-        /// </summary>
-        private static void DisplayDeleteCustomer()
-        {
-            ListAllCustomers();
-
-            Console.WriteLine();
-
-            if (!CustomerModel.GetAllCustomers().Any()) return;
-
-            var customerIdToDelete = PromptForCustomerId().Id;
-
-            CustomerModel.DeleteCustomer(customerIdToDelete);
-            Console.WriteLine("Customer deleted!");
-        }
-
-        /// <summary>
-        /// Give user option to add a customer
-        /// </summary>
-        private static void DisplayAddCustomer()
-        {
-            Console.Write("Please Enter First Name: ");
-            var firstName = MenuService.GetValidString();
-
-            Console.Write("Please Enter Last Name: ");
-            var lastName = MenuService.GetValidString();
-
-            Console.Write("Please Enter Address: ");
-            var address = MenuService.GetValidString();
-
-            var newCustomer = new Customer()
+            BllFacade.CustomerService.CreateCustomer(new Customer()
             {
                 FirstName = firstName,
                 LastName = lastName,
                 Address = address
-            };
-
-            var createdCustomer = CustomerModel.CreateCustomer(newCustomer);
-            Console.WriteLine("Customer created!");
-            DisplayCustomerInfo(createdCustomer);
+            });
         }
 
-        /// <summary>
-        /// List all customers in model
-        /// </summary>
-        private static void ListAllCustomers()
+        private static void ListCustomers()
         {
-            var customers = CustomerModel.GetAllCustomers();
-
-            Console.WriteLine("Listing all customers:\n");
-
-            if (customers.Any())
+            Console.WriteLine("\nList of Customers");
+            foreach (var customer in BllFacade.CustomerService.GetAllCustomers())
             {
-                foreach (var customer in customers)
-                {
-                    DisplayCustomerInfo(customer);
-                }
+                Console.WriteLine($"Id: {customer.Id} Name: {customer.GetFullName()} Adress: {customer.Address}");
             }
-            else
+            Console.WriteLine("\n");
+        }
+
+        private static int ShowMenu(string[] menuItems)
+        {
+            Console.WriteLine("Select What you want to do:\n");
+
+            for (int i = 0; i < menuItems.Length; i++)
             {
-                Console.WriteLine("Ain't got no customers...");
+                //Console.WriteLine((i + 1) + ":" + menuItems[i]);
+                Console.WriteLine($"{(i + 1)}: {menuItems[i]}");
             }
+
+            int selection;
+            while (!int.TryParse(Console.ReadLine(), out selection)
+                   || selection < 1
+                   || selection > 5)
+            {
+                Console.WriteLine("Please select a number between 1-5");
+            }
+
+            return selection;
         }
     }
 }
