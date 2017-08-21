@@ -8,7 +8,8 @@ namespace CustomerAppUI
 {
     static class CustomerProgram
     {
-        private static readonly BllFacade BllFacade = new BllFacade();
+        private static readonly BllFacade BllFacade = BllFacade.Instance;
+        private static bool _userIsDone;
 
         static void Main(string[] args)
         {
@@ -37,51 +38,65 @@ namespace CustomerAppUI
                 "Exit"
             };
 
-            //Show Menu
-            //Wait for Selection
-            // - Show selection or
-            // - Warning and go back to menu
+            Console.WriteLine();
 
-            var selection = ShowMenu(menuItems);
-
-            while (selection != 5)
+            while (!_userIsDone)
             {
-                switch (selection)
-                {
-                    case 1:
-                        ListCustomers();
-                        break;
-                    case 2:
-                        AddCustomers();
-                        break;
-                    case 3:
-                        ListCustomers();
-                        DeleteCustomer();
-                        break;
-                    case 4:
-                        ListCustomers();
-                        EditCustomer();
-                        break;
-                    default:
-                        break;
-                }
-                selection = ShowMenu(menuItems);
+                ShowMenu(menuItems);
+
+                var userSelection = GetInputFromUser();
+
+                ReactToUserInput(userSelection);
             }
+
             Console.WriteLine("Bye bye!");
 
             Console.ReadLine();
         }
 
+        /// <summary>
+        /// React to the user input
+        /// </summary>
+        /// <param name="selection"></param>
+        private static void ReactToUserInput(int selection)
+        {
+            switch (selection)
+            {
+                case 1:
+                    ListCustomers();
+                    break;
+                case 2:
+                    AddCustomers();
+                    break;
+                case 3:
+                    ListCustomers();
+                    DeleteCustomer();
+                    break;
+                case 4:
+                    ListCustomers();
+                    EditCustomer();
+                    break;
+                case 5:
+                    _userIsDone = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Propmt user for id to edit a customer
+        /// </summary>
         private static void EditCustomer()
         {
             var customer = FindCustomerById();
             if (customer != null)
             {
-                Console.WriteLine("FirstName: ");
+                Console.Write("FirstName: ");
                 customer.FirstName = Console.ReadLine();
-                Console.WriteLine("LastName: ");
+                Console.Write("LastName: ");
                 customer.LastName = Console.ReadLine();
-                Console.WriteLine("Address: ");
+                Console.Write("Address: ");
                 customer.Address = Console.ReadLine();
 
                 BllFacade.CustomerService.UpdateCustomer(customer);
@@ -93,12 +108,12 @@ namespace CustomerAppUI
         }
 
         /// <summary>
-        /// 
+        /// Prompt user for id to find customer
         /// </summary>
-        /// <returns>kdjfjkdf</returns>
+        /// <returns>Customer with parsed id</returns>
         private static Customer FindCustomerById()
         {
-            Console.WriteLine("Insert Customer Id: ");
+            Console.Write("Insert Customer Id: ");
             int id;
             while (!int.TryParse(Console.ReadLine(), out id))
             {
@@ -107,49 +122,66 @@ namespace CustomerAppUI
             return BllFacade.CustomerService.GetCustomerById(id);
         }
 
+        /// <summary>
+        /// Prompt user for id for customer to delete
+        /// </summary>
         private static void DeleteCustomer()
         {
+            Console.WriteLine("Please write id of customer to delete");
             var customerFound = FindCustomerById();
             if (customerFound != null)
             {
                 BllFacade.CustomerService.DeleteCustomer(customerFound.Id);
             }
-            else
-            {
-                Console.WriteLine("Customer not Found");
-            }
+
+            var response = customerFound == null ? "Customer not found" : "Customer was deleted";
+            Console.WriteLine(response);
         }
 
+        /// <summary>
+        /// Prompt user for information to add new customer
+        /// </summary>
         private static void AddCustomers()
         {
-            Console.WriteLine("Firstname: ");
+            Console.Write("Firstname: ");
             var firstName = Console.ReadLine();
 
-            Console.WriteLine("Lastname: ");
+            Console.Write("Lastname: ");
             var lastName = Console.ReadLine();
 
-            Console.WriteLine("Address: ");
+            Console.Write("Address: ");
             var address = Console.ReadLine();
 
-            BllFacade.CustomerService.CreateCustomer(new Customer()
+            var createdCustomer = BllFacade.CustomerService.CreateCustomer(new Customer()
             {
                 FirstName = firstName,
                 LastName = lastName,
                 Address = address
             });
+            Console.WriteLine("Customer created:");
+            DisplayCustomer(createdCustomer);
         }
 
+        /// <summary>
+        /// List all customers
+        /// </summary>
         private static void ListCustomers()
         {
             Console.WriteLine("\nList of Customers");
             foreach (var customer in BllFacade.CustomerService.GetAllCustomers())
             {
-                Console.WriteLine($"Id: {customer.Id} Name: {customer.GetFullName()} Adress: {customer.Address}");
+                DisplayCustomer(customer);
             }
             Console.WriteLine("\n");
         }
 
-        private static int ShowMenu(string[] menuItems)
+        private static void DisplayCustomer(Customer customerToDispaly)
+        {
+            Console.WriteLine($"Id: {customerToDispaly.Id} Name: {customerToDispaly.GetFullName()} Adress: {customerToDispaly.Address}");
+        }
+
+
+        private static void ShowMenu(string[] menuItems)
         {
             Console.WriteLine("Select What you want to do:\n");
 
@@ -158,7 +190,15 @@ namespace CustomerAppUI
                 //Console.WriteLine((i + 1) + ":" + menuItems[i]);
                 Console.WriteLine($"{(i + 1)}: {menuItems[i]}");
             }
+        }
 
+        /// <summary>
+        /// Get input from user
+        /// </summary>
+        /// <returns></returns>
+        private static int GetInputFromUser()
+        {
+            Console.Write("Your input: ");
             int selection;
             while (!int.TryParse(Console.ReadLine(), out selection)
                    || selection < 1
