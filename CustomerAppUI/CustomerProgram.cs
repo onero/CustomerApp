@@ -8,7 +8,7 @@ namespace CustomerAppUI
 {
     static class CustomerProgram
     {
-        private static readonly BllFacade BllFacade = BllFacade.Instance;
+        private static readonly BLLFacade BllFacade = BLLFacade.Instance;
         private static bool _userIsDone;
 
         static void Main(string[] args)

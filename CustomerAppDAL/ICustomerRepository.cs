@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using CustomerAppEntity;
 
-namespace CustomerAppBLL
+namespace CustomerAppDAL
 {
-    public interface ICustomerService
-    {
-        /// <summary>
+    public interface ICustomerRepository
+    {/// <summary>
         /// Create a customer
         /// </summary>
         /// <param name="customerToCreate"></param>
@@ -20,13 +19,6 @@ namespace CustomerAppBLL
         /// <returns>Collection of customers</returns>
         IEnumerable<Customer> GetAllCustomers();
         Customer GetCustomerById(int id);
-
-        /// <summary>
-        /// Update parsed customer
-        /// </summary>
-        /// <param name="updatedCustomer"></param>
-        /// <returns></returns>
-        Customer UpdateCustomer(Customer updatedCustomer);
 
         /// <summary>
         /// Delete customer by id

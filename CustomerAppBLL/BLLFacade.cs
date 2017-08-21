@@ -5,12 +5,13 @@ using CustomerAppBLL.Services;
 
 namespace CustomerAppBLL
 {
-    public class BllFacade
+    public class BLLFacade
     {
-        private static BllFacade _instance;
+        private static BLLFacade _instance;
 
-        public static BllFacade Instance => _instance ?? (_instance = new BllFacade());
+        public static BLLFacade Instance => _instance ?? (_instance = new BLLFacade());
 
         public ICustomerService CustomerService => new CustomerService();
+        
     }
 }
