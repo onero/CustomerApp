@@ -7,7 +7,7 @@ using CustomerAppEntity;
 
 namespace CustomerAppBLL.Services
 {
-    public class CustomerService : ICustomerService
+    class CustomerService : ICustomerService
     {
         public Customer CreateCustomer(Customer customerToCreate)
         {
