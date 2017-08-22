@@ -13,8 +13,6 @@ branches:
   - development
 notifications:
   slack: cs2016a:MrE8tgSmsfcVCMVTa1JgT78G
-    on_success: change # default: change
-    on_failure: change # default: always
   email:
     on_success: never # default: change
     on_failure: change # default: always 
