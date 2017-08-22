@@ -12,7 +12,7 @@ branches:
   - master
   - development
 notifications:
+  email: false
   slack: cs2016a:MrE8tgSmsfcVCMVTa1JgT78G
     on_success: change # default: always
     on_failure: change # default: always
-  email: false
