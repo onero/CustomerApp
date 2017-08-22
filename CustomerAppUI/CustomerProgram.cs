@@ -9,7 +9,7 @@ namespace CustomerAppUI
 {
     internal static class CustomerProgram
     {
-        private static readonly BLLFacade BLLFacade = BLLFacade.Instance;
+        private static readonly BLLFacade BLLFacade = new BLLFacade();
         private static readonly MenuModel MenuModel = new MenuModel();
         private static bool _userIsDone;
 
@@ -25,8 +25,6 @@ namespace CustomerAppUI
             }
 
             Console.WriteLine("Bye bye!");
-
-            Console.ReadLine();
         }
 
         /// <summary>
@@ -73,8 +71,6 @@ namespace CustomerAppUI
                 customer.LastName = Console.ReadLine();
                 Console.Write("Address: ");
                 customer.Address = Console.ReadLine();
-
-                BLLFacade.CustomerService.UpdateCustomer(customer);
             }
             else
             {
@@ -94,7 +90,7 @@ namespace CustomerAppUI
             {
                 Console.WriteLine("Please insert a number");
             }
-            return BLLFacade.CustomerService.GetCustomerById(id);
+            return BLLFacade.CustomerService.GetById(id);
         }
 
         /// <summary>
@@ -106,7 +102,7 @@ namespace CustomerAppUI
             var customerFound = FindCustomerById();
             if (customerFound != null)
             {
-                BLLFacade.CustomerService.DeleteCustomer(customerFound.Id);
+                BLLFacade.CustomerService.Delete(customerFound.Id);
             }
 
             var response = customerFound == null ? "Customer not found" : "Customer was deleted";
@@ -127,7 +123,7 @@ namespace CustomerAppUI
             Console.Write("Address: ");
             var address = Console.ReadLine();
 
-            var createdCustomer = BLLFacade.CustomerService.CreateCustomer(new Customer()
+            var createdCustomer = BLLFacade.CustomerService.Create(new Customer()
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -143,7 +139,7 @@ namespace CustomerAppUI
         private static void ListCustomers()
         {
             Console.WriteLine("\nList of Customers");
-            foreach (var customer in BLLFacade.CustomerService.GetAllCustomers())
+            foreach (var customer in BLLFacade.CustomerService.GetAll())
             {
                 DisplayCustomer(customer);
             }
@@ -159,7 +155,7 @@ namespace CustomerAppUI
         {
             Console.WriteLine("\nSelect What you want to do:\n");
 
-            for (int i = 0; i < menuItems.Length; i++)
+            for (var i = 0; i < menuItems.Length; i++)
             {
                 //Console.WriteLine((i + 1) + ":" + menuItems[i]);
                 Console.WriteLine($"{(i + 1)}: {menuItems[i]}");

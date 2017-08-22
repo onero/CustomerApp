@@ -8,32 +8,32 @@ using CustomerAppEntity;
 
 namespace CustomerAppBLL.Services
 {
-    internal class CustomerService : ICustomerService
+    public class CustomerService : IService<Customer>
     {
-        private readonly ICustomerRepository _repo;
+        private readonly IRepository<Customer> _repo;
 
-        public CustomerService(ICustomerRepository repo)
+        public CustomerService(IRepository<Customer> repo)
         {
             _repo = repo;
         }
-        public Customer CreateCustomer(Customer customerToCreate)
+        public Customer Create(Customer customerToCreate)
         {
-            return _repo.CreateCustomer(customerToCreate);
+            return _repo.Create(customerToCreate);
         }
 
-        public IEnumerable<Customer> GetAllCustomers()
+        public IEnumerable<Customer> GetAll()
         {
-            return _repo.GetAllCustomers();
+            return _repo.GetAll();
         }
 
-        public Customer GetCustomerById(int id)
+        public Customer GetById(int id)
         {
-            return _repo.GetCustomerById(id);
+            return _repo.GetById(id);
         }
 
-        public Customer UpdateCustomer(Customer updatedCustomer)
+        public Customer Update(Customer updatedCustomer)
         {
-            var customerFromDb = GetCustomerById(updatedCustomer.Id);
+            var customerFromDb = GetById(updatedCustomer.Id);
             if (customerFromDb == null) throw new InvalidOperationException("Customer doesn't exist in DB");
 
             customerFromDb.FirstName = updatedCustomer.FirstName;
@@ -42,9 +42,9 @@ namespace CustomerAppBLL.Services
             return customerFromDb;
         }
 
-        public bool DeleteCustomer(int id)
+        public bool Delete(int id)
         {
-            return _repo.DeleteCustomer(id);
+            return _repo.Delete(id);
         }
     }
 }
