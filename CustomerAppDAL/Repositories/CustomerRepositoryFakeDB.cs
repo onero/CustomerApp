@@ -37,13 +37,7 @@ namespace CustomerAppDAL.Repositories
 
         public Customer UpdateCustomer(Customer updatedCustomer)
         {
-            var customerFromDb = GetCustomerById(updatedCustomer.Id);
-            if (customerFromDb == null) throw new InvalidOperationException("Customer doesn't exist in DB");
-
-            customerFromDb.FirstName = updatedCustomer.FirstName;
-            customerFromDb.LastName = updatedCustomer.LastName;
-            customerFromDb.Address = updatedCustomer.Address;
-            return customerFromDb;
+            throw new NotImplementedException();
         }
 
         public bool DeleteCustomer(int id)

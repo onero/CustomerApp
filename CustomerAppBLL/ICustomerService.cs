@@ -5,6 +5,9 @@ using CustomerAppEntity;
 
 namespace CustomerAppBLL
 {
+    /// <summary>
+    /// Customer interface for basic CRUD with DAL
+    /// </summary>
     public interface ICustomerService
     {
         /// <summary>
@@ -19,6 +22,7 @@ namespace CustomerAppBLL
         /// </summary>
         /// <returns>Collection of customers</returns>
         IEnumerable<Customer> GetAllCustomers();
+
         Customer GetCustomerById(int id);
 
         /// <summary>

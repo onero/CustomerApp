@@ -5,6 +5,9 @@ using CustomerAppEntity;
 
 namespace CustomerAppDAL
 {
+    /// <summary>
+    /// Interface for CRUD operations on a DB
+    /// </summary>
     public interface ICustomerRepository
     {/// <summary>
         /// Create a customer

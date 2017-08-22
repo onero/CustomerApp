@@ -10,29 +10,40 @@ namespace CustomerAppBLL.Services
 {
     internal class CustomerService : ICustomerService
     {
+        private readonly ICustomerRepository _repo;
+        public CustomerService(ICustomerRepository repo)
+        {
+            _repo = repo;
+        }
         public Customer CreateCustomer(Customer customerToCreate)
         {
-            throw new NotImplementedException();
+            return _repo.CreateCustomer(customerToCreate);
         }
 
         public IEnumerable<Customer> GetAllCustomers()
         {
-            throw new NotImplementedException();
+            return _repo.GetAllCustomers();
         }
 
         public Customer GetCustomerById(int id)
         {
-            throw new NotImplementedException();
+            return _repo.GetCustomerById(id);
         }
 
         public Customer UpdateCustomer(Customer updatedCustomer)
         {
-            throw new NotImplementedException();
+            var customerFromDb = GetCustomerById(updatedCustomer.Id);
+            if (customerFromDb == null) throw new InvalidOperationException("Customer doesn't exist in DB");
+
+            customerFromDb.FirstName = updatedCustomer.FirstName;
+            customerFromDb.LastName = updatedCustomer.LastName;
+            customerFromDb.Address = updatedCustomer.Address;
+            return customerFromDb;
         }
 
         public bool DeleteCustomer(int id)
         {
-            throw new NotImplementedException();
+            return _repo.DeleteCustomer(id);
         }
     }
 }

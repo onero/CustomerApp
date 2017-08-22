@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CustomerAppBLL.Services;
+using CustomerAppDAL;
 
 namespace CustomerAppBLL
 {
@@ -11,7 +12,7 @@ namespace CustomerAppBLL
 
         public static BLLFacade Instance => _instance ?? (_instance = new BLLFacade());
 
-        public ICustomerService CustomerService => new CustomerService();
+        public ICustomerService CustomerService => new CustomerService(new DALFacade().CustomerRepository);
         
     }
 }

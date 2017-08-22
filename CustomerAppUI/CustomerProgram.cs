@@ -158,7 +158,7 @@ namespace CustomerAppUI
                 LastName = lastName,
                 Address = address
             });
-            Console.WriteLine("Customer created:");
+            Console.WriteLine("\nCustomer created:");
             DisplayCustomer(createdCustomer);
         }
 
@@ -172,7 +172,6 @@ namespace CustomerAppUI
             {
                 DisplayCustomer(customer);
             }
-            Console.WriteLine("\n");
         }
 
         private static void DisplayCustomer(Customer customerToDispaly)
