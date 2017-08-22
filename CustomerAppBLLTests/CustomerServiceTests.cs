@@ -30,7 +30,7 @@ namespace CustomerAppBLLTests
             var created1 = _customerService.Create(MockCustomer);
             var created2 = _customerService.Create(MockCustomer);
 
-            Assert.NotNull(created2);
+            Assert.Null(created2);
         }
 
         [Fact]
