@@ -8,7 +8,7 @@ namespace CustomerAppUI
 {
     static class CustomerProgram
     {
-        private static readonly BLLFacade BllFacade = BLLFacade.Instance;
+        private static readonly BLLFacade BLLFacade = BLLFacade.Instance;
         private static bool _userIsDone;
 
         static void Main(string[] args)
@@ -19,7 +19,7 @@ namespace CustomerAppUI
                 LastName = "Dylan",
                 Address = "BongoStreet 202"
             };
-            BllFacade.CustomerService.CreateCustomer(customer1);
+            BLLFacade.CustomerService.CreateCustomer(customer1);
 
             var customer2 = new Customer()
             {
@@ -27,7 +27,7 @@ namespace CustomerAppUI
                 LastName = "Bilde",
                 Address = "Ostestrasse 202"
             };
-            BllFacade.CustomerService.CreateCustomer(customer2);
+            BLLFacade.CustomerService.CreateCustomer(customer2);
 
             string[] menuItems =
             {
@@ -99,7 +99,7 @@ namespace CustomerAppUI
                 Console.Write("Address: ");
                 customer.Address = Console.ReadLine();
 
-                BllFacade.CustomerService.UpdateCustomer(customer);
+                BLLFacade.CustomerService.UpdateCustomer(customer);
             }
             else
             {
@@ -119,7 +119,7 @@ namespace CustomerAppUI
             {
                 Console.WriteLine("Please insert a number");
             }
-            return BllFacade.CustomerService.GetCustomerById(id);
+            return BLLFacade.CustomerService.GetCustomerById(id);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace CustomerAppUI
             var customerFound = FindCustomerById();
             if (customerFound != null)
             {
-                BllFacade.CustomerService.DeleteCustomer(customerFound.Id);
+                BLLFacade.CustomerService.DeleteCustomer(customerFound.Id);
             }
 
             var response = customerFound == null ? "Customer not found" : "Customer was deleted";
@@ -152,7 +152,7 @@ namespace CustomerAppUI
             Console.Write("Address: ");
             var address = Console.ReadLine();
 
-            var createdCustomer = BllFacade.CustomerService.CreateCustomer(new Customer()
+            var createdCustomer = BLLFacade.CustomerService.CreateCustomer(new Customer()
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -168,7 +168,7 @@ namespace CustomerAppUI
         private static void ListCustomers()
         {
             Console.WriteLine("\nList of Customers");
-            foreach (var customer in BllFacade.CustomerService.GetAllCustomers())
+            foreach (var customer in BLLFacade.CustomerService.GetAllCustomers())
             {
                 DisplayCustomer(customer);
             }

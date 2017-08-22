@@ -10,9 +10,11 @@ namespace CustomerAppBLL
     {
         private static BLLFacade _instance;
 
+        private readonly DALFacade _dalFacade = DALFacade.Instance;
+
         public static BLLFacade Instance => _instance ?? (_instance = new BLLFacade());
 
-        public ICustomerService CustomerService => new CustomerService(new DALFacade().CustomerRepository);
+        public ICustomerService CustomerService => new CustomerService(_dalFacade.CustomerRepository);
         
     }
 }
