@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerAppDAL", "CustomerA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerAppEntity", "CustomerAppEntity\CustomerAppEntity.csproj", "{71E970C7-70EC-46DC-B261-EF706E0426DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerAppBLLTests", "CustomerAppBLLTests\CustomerAppBLLTests.csproj", "{AD981BD5-941B-429C-A0CD-F8A01D3756D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerAppBLLTests", "CustomerAppBLLTests\CustomerAppBLLTests.csproj", "{AD981BD5-941B-429C-A0CD-F8A01D3756D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
