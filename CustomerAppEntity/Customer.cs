@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CustomerAppEntity
+﻿namespace CustomerAppEntity
 {
     public class Customer
     {
@@ -9,7 +7,9 @@ namespace CustomerAppEntity
         public string LastName { get; set; }
         public string Address { get; set; }
 
-        public string GetFullName() => $"{FirstName} {LastName}";
-
+        public string GetFullName()
+        {
+            return $"{FirstName} {LastName}";
+        }
     }
 }

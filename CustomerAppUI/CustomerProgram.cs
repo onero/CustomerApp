@@ -1,48 +1,21 @@
 ﻿using System;
-using System.Linq;
 using CustomerAppBLL;
-using CustomerAppBLL.Services;
 using CustomerAppEntity;
+using CustomerAppUI.Model;
 
 namespace CustomerAppUI
 {
-    static class CustomerProgram
+    internal static class CustomerProgram
     {
-        private static readonly BllFacade BllFacade = BllFacade.Instance;
+        private static readonly BLLFacade BLLFacade = new BLLFacade();
+        private static readonly MenuModel MenuModel = new MenuModel();
         private static bool _userIsDone;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            var customer1 = new Customer()
-            {
-                FirstName = "Bob",
-                LastName = "Dylan",
-                Address = "BongoStreet 202"
-            };
-            BllFacade.CustomerService.CreateCustomer(customer1);
-
-            var customer2 = new Customer()
-            {
-                FirstName = "Lars",
-                LastName = "Bilde",
-                Address = "Ostestrasse 202"
-            };
-            BllFacade.CustomerService.CreateCustomer(customer2);
-
-            string[] menuItems =
-            {
-                "List All Customers",
-                "Add Customer",
-                "Delete Customer",
-                "Edit Customer",
-                "Exit"
-            };
-
-            Console.WriteLine();
-
             while (!_userIsDone)
             {
-                ShowMenu(menuItems);
+                ShowMenu(MenuModel.MenuItems);
 
                 var userSelection = GetInputFromUser();
 
@@ -50,12 +23,10 @@ namespace CustomerAppUI
             }
 
             Console.WriteLine("Bye bye!");
-
-            Console.ReadLine();
         }
 
         /// <summary>
-        /// React to the user input
+        ///     React to the user input
         /// </summary>
         /// <param name="selection"></param>
         private static void ReactToUserInput(int selection)
@@ -85,7 +56,7 @@ namespace CustomerAppUI
         }
 
         /// <summary>
-        /// Propmt user for id to edit a customer
+        ///     Propmt user for id to edit a customer
         /// </summary>
         private static void EditCustomer()
         {
@@ -98,8 +69,6 @@ namespace CustomerAppUI
                 customer.LastName = Console.ReadLine();
                 Console.Write("Address: ");
                 customer.Address = Console.ReadLine();
-
-                BllFacade.CustomerService.UpdateCustomer(customer);
             }
             else
             {
@@ -108,7 +77,7 @@ namespace CustomerAppUI
         }
 
         /// <summary>
-        /// Prompt user for id to find customer
+        ///     Prompt user for id to find customer
         /// </summary>
         /// <returns>Customer with parsed id</returns>
         private static Customer FindCustomerById()
@@ -116,30 +85,26 @@ namespace CustomerAppUI
             Console.Write("Insert Customer Id: ");
             int id;
             while (!int.TryParse(Console.ReadLine(), out id))
-            {
                 Console.WriteLine("Please insert a number");
-            }
-            return BllFacade.CustomerService.GetCustomerById(id);
+            return BLLFacade.CustomerService.GetById(id);
         }
 
         /// <summary>
-        /// Prompt user for id for customer to delete
+        ///     Prompt user for id for customer to delete
         /// </summary>
         private static void DeleteCustomer()
         {
             Console.WriteLine("Please write id of customer to delete");
             var customerFound = FindCustomerById();
             if (customerFound != null)
-            {
-                BllFacade.CustomerService.DeleteCustomer(customerFound.Id);
-            }
+                BLLFacade.CustomerService.Delete(customerFound.Id);
 
             var response = customerFound == null ? "Customer not found" : "Customer was deleted";
             Console.WriteLine(response);
         }
 
         /// <summary>
-        /// Prompt user for information to add new customer
+        ///     Prompt user for information to add new customer
         /// </summary>
         private static void AddCustomers()
         {
@@ -152,27 +117,24 @@ namespace CustomerAppUI
             Console.Write("Address: ");
             var address = Console.ReadLine();
 
-            var createdCustomer = BllFacade.CustomerService.CreateCustomer(new Customer()
+            var createdCustomer = BLLFacade.CustomerService.Create(new Customer
             {
                 FirstName = firstName,
                 LastName = lastName,
                 Address = address
             });
-            Console.WriteLine("Customer created:");
+            Console.WriteLine("\nCustomer created:");
             DisplayCustomer(createdCustomer);
         }
 
         /// <summary>
-        /// List all customers
+        ///     List all customers
         /// </summary>
         private static void ListCustomers()
         {
             Console.WriteLine("\nList of Customers");
-            foreach (var customer in BllFacade.CustomerService.GetAllCustomers())
-            {
+            foreach (var customer in BLLFacade.CustomerService.GetAll())
                 DisplayCustomer(customer);
-            }
-            Console.WriteLine("\n");
         }
 
         private static void DisplayCustomer(Customer customerToDispaly)
@@ -183,17 +145,15 @@ namespace CustomerAppUI
 
         private static void ShowMenu(string[] menuItems)
         {
-            Console.WriteLine("Select What you want to do:\n");
+            Console.WriteLine("\nSelect What you want to do:\n");
 
-            for (int i = 0; i < menuItems.Length; i++)
-            {
+            for (var i = 0; i < menuItems.Length; i++)
                 //Console.WriteLine((i + 1) + ":" + menuItems[i]);
-                Console.WriteLine($"{(i + 1)}: {menuItems[i]}");
-            }
+                Console.WriteLine($"{i + 1}: {menuItems[i]}");
         }
 
         /// <summary>
-        /// Get input from user
+        ///     Get input from user
         /// </summary>
         /// <returns></returns>
         private static int GetInputFromUser()
@@ -203,9 +163,7 @@ namespace CustomerAppUI
             while (!int.TryParse(Console.ReadLine(), out selection)
                    || selection < 1
                    || selection > 5)
-            {
                 Console.WriteLine("Please select a number between 1-5");
-            }
 
             return selection;
         }

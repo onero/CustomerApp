@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CustomerAppBLL.Services;
+﻿using CustomerAppBLL.Services;
+using CustomerAppDAL;
+using CustomerAppEntity;
 
 namespace CustomerAppBLL
 {
-    public class BllFacade
+    public class BLLFacade
     {
-        private static BllFacade _instance;
-
-        public static BllFacade Instance => _instance ?? (_instance = new BllFacade());
-
-        public ICustomerService CustomerService => new CustomerService();
+        public IService<Customer> CustomerService => new CustomerService(new DALFacade().CustomerRepository);
     }
 }

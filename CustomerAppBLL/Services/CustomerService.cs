@@ -1,54 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CustomerAppDAL;
 using CustomerAppEntity;
 
 namespace CustomerAppBLL.Services
 {
-    class CustomerService : ICustomerService
+    public class CustomerService : IService<Customer>
     {
-        public Customer CreateCustomer(Customer customerToCreate)
+        private readonly IRepository<Customer> _repo;
+
+        public CustomerService(IRepository<Customer> repo)
         {
-            Customer newCustomer;
-            FakeDB.Customers.Add(newCustomer = new Customer()
-            {
-                Id = FakeDB.Id++,
-                FirstName = customerToCreate.FirstName,
-                LastName = customerToCreate.LastName,
-                Address = customerToCreate.Address
-            });
-            return newCustomer;
+            _repo = repo;
         }
 
-        public IEnumerable<Customer> GetAllCustomers()
+        public Customer Create(Customer customerToCreate)
         {
-            return new List<Customer>(FakeDB.Customers);
+            return _repo.Create(customerToCreate);
         }
 
-        public Customer GetCustomerById(int id)
+        public IEnumerable<Customer> GetAll()
         {
-            return FakeDB.Customers.FirstOrDefault(c => c.Id == id);
+            return _repo.GetAll();
         }
 
-        public Customer UpdateCustomer(Customer updatedCustomer)
+        public Customer GetById(int id)
         {
-            var customerFromDb = GetCustomerById(updatedCustomer.Id);
+            return _repo.GetById(id);
+        }
+
+        public bool Delete(int id)
+        {
+            return _repo.Delete(id);
+        }
+
+        public Customer Update(Customer updatedCustomer)
+        {
+            var customerFromDb = GetById(updatedCustomer.Id);
             if (customerFromDb == null) throw new InvalidOperationException("Customer doesn't exist in DB");
 
             customerFromDb.FirstName = updatedCustomer.FirstName;
             customerFromDb.LastName = updatedCustomer.LastName;
             customerFromDb.Address = updatedCustomer.Address;
             return customerFromDb;
-        }
-
-        public bool DeleteCustomer(int id)
-        {
-            var customerToDelete = GetCustomerById(id);
-            if (customerToDelete == null) return false;
-            FakeDB.Customers.Remove(customerToDelete);
-            return true;
         }
     }
 }
