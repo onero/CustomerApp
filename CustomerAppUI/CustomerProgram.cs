@@ -3,46 +3,21 @@ using System.Linq;
 using CustomerAppBLL;
 using CustomerAppBLL.Services;
 using CustomerAppEntity;
+using CustomerAppUI.Model;
 
 namespace CustomerAppUI
 {
-    static class CustomerProgram
+    internal static class CustomerProgram
     {
         private static readonly BLLFacade BLLFacade = BLLFacade.Instance;
+        private static readonly MenuModel MenuModel = new MenuModel();
         private static bool _userIsDone;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            var customer1 = new Customer()
-            {
-                FirstName = "Bob",
-                LastName = "Dylan",
-                Address = "BongoStreet 202"
-            };
-            BLLFacade.CustomerService.CreateCustomer(customer1);
-
-            var customer2 = new Customer()
-            {
-                FirstName = "Lars",
-                LastName = "Bilde",
-                Address = "Ostestrasse 202"
-            };
-            BLLFacade.CustomerService.CreateCustomer(customer2);
-
-            string[] menuItems =
-            {
-                "List All Customers",
-                "Add Customer",
-                "Delete Customer",
-                "Edit Customer",
-                "Exit"
-            };
-
-            Console.WriteLine();
-
             while (!_userIsDone)
             {
-                ShowMenu(menuItems);
+                ShowMenu(MenuModel.MenuItems);
 
                 var userSelection = GetInputFromUser();
 
@@ -182,7 +157,7 @@ namespace CustomerAppUI
 
         private static void ShowMenu(string[] menuItems)
         {
-            Console.WriteLine("Select What you want to do:\n");
+            Console.WriteLine("\nSelect What you want to do:\n");
 
             for (int i = 0; i < menuItems.Length; i++)
             {

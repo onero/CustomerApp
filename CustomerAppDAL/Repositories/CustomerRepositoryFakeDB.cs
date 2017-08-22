@@ -8,8 +8,26 @@ namespace CustomerAppDAL.Repositories
     internal class CustomerRepositoryFakeDB : ICustomerRepository
     {
         #region FakeDB
+
         private static int _id = 1;
-        private static readonly List<Customer> Customers = new List<Customer>();
+
+        private static readonly List<Customer> Customers = new List<Customer>()
+        {
+            new Customer()
+            {
+                FirstName = "Bob",
+                LastName = "Dylan",
+                Address = "BongoStreet 202"
+            },
+
+            new Customer()
+            {
+                FirstName = "Lars",
+                LastName = "Bilde",
+                Address = "Ostestrasse 202"
+            },
+        };
+
         #endregion
 
         public Customer CreateCustomer(Customer customerToCreate)
