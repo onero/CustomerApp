@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CustomerAppDAL;
-using CustomerAppDAL.Repositories;
 using CustomerAppEntity;
 
 namespace CustomerAppBLL.Services
@@ -16,6 +13,7 @@ namespace CustomerAppBLL.Services
         {
             _repo = repo;
         }
+
         public Customer Create(Customer customerToCreate)
         {
             return _repo.Create(customerToCreate);
@@ -31,6 +29,11 @@ namespace CustomerAppBLL.Services
             return _repo.GetById(id);
         }
 
+        public bool Delete(int id)
+        {
+            return _repo.Delete(id);
+        }
+
         public Customer Update(Customer updatedCustomer)
         {
             var customerFromDb = GetById(updatedCustomer.Id);
@@ -40,11 +43,6 @@ namespace CustomerAppBLL.Services
             customerFromDb.LastName = updatedCustomer.LastName;
             customerFromDb.Address = updatedCustomer.Address;
             return customerFromDb;
-        }
-
-        public bool Delete(int id)
-        {
-            return _repo.Delete(id);
         }
     }
 }

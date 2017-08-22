@@ -9,7 +9,7 @@ namespace CustomerAppBLL
         private static readonly Regex RegexNumbers = new Regex("^(?=.*[0-9])");
 
         /// <summary>
-        /// Name does not contain numbers
+        ///     Name does not contain numbers
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -19,13 +19,12 @@ namespace CustomerAppBLL
         }
 
         /// <summary>
-        /// Parse integer from user input
+        ///     Parse integer from user input
         /// </summary>
         /// <param name="selection"></param>
         /// <returns>true if input is valid number, false if not</returns>
         public static bool ParseIntegerFromConsole(out int selection)
         {
-
             return int.TryParse(Console.ReadLine(), out selection);
         }
 

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using CustomerAppBLL;
-using CustomerAppBLL.Services;
 using CustomerAppEntity;
 using CustomerAppUI.Model;
 
@@ -28,7 +26,7 @@ namespace CustomerAppUI
         }
 
         /// <summary>
-        /// React to the user input
+        ///     React to the user input
         /// </summary>
         /// <param name="selection"></param>
         private static void ReactToUserInput(int selection)
@@ -58,7 +56,7 @@ namespace CustomerAppUI
         }
 
         /// <summary>
-        /// Propmt user for id to edit a customer
+        ///     Propmt user for id to edit a customer
         /// </summary>
         private static void EditCustomer()
         {
@@ -79,7 +77,7 @@ namespace CustomerAppUI
         }
 
         /// <summary>
-        /// Prompt user for id to find customer
+        ///     Prompt user for id to find customer
         /// </summary>
         /// <returns>Customer with parsed id</returns>
         private static Customer FindCustomerById()
@@ -87,30 +85,26 @@ namespace CustomerAppUI
             Console.Write("Insert Customer Id: ");
             int id;
             while (!int.TryParse(Console.ReadLine(), out id))
-            {
                 Console.WriteLine("Please insert a number");
-            }
             return BLLFacade.CustomerService.GetById(id);
         }
 
         /// <summary>
-        /// Prompt user for id for customer to delete
+        ///     Prompt user for id for customer to delete
         /// </summary>
         private static void DeleteCustomer()
         {
             Console.WriteLine("Please write id of customer to delete");
             var customerFound = FindCustomerById();
             if (customerFound != null)
-            {
                 BLLFacade.CustomerService.Delete(customerFound.Id);
-            }
 
             var response = customerFound == null ? "Customer not found" : "Customer was deleted";
             Console.WriteLine(response);
         }
 
         /// <summary>
-        /// Prompt user for information to add new customer
+        ///     Prompt user for information to add new customer
         /// </summary>
         private static void AddCustomers()
         {
@@ -123,7 +117,7 @@ namespace CustomerAppUI
             Console.Write("Address: ");
             var address = Console.ReadLine();
 
-            var createdCustomer = BLLFacade.CustomerService.Create(new Customer()
+            var createdCustomer = BLLFacade.CustomerService.Create(new Customer
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -134,15 +128,13 @@ namespace CustomerAppUI
         }
 
         /// <summary>
-        /// List all customers
+        ///     List all customers
         /// </summary>
         private static void ListCustomers()
         {
             Console.WriteLine("\nList of Customers");
             foreach (var customer in BLLFacade.CustomerService.GetAll())
-            {
                 DisplayCustomer(customer);
-            }
         }
 
         private static void DisplayCustomer(Customer customerToDispaly)
@@ -156,14 +148,12 @@ namespace CustomerAppUI
             Console.WriteLine("\nSelect What you want to do:\n");
 
             for (var i = 0; i < menuItems.Length; i++)
-            {
                 //Console.WriteLine((i + 1) + ":" + menuItems[i]);
-                Console.WriteLine($"{(i + 1)}: {menuItems[i]}");
-            }
+                Console.WriteLine($"{i + 1}: {menuItems[i]}");
         }
 
         /// <summary>
-        /// Get input from user
+        ///     Get input from user
         /// </summary>
         /// <returns></returns>
         private static int GetInputFromUser()
@@ -173,9 +163,7 @@ namespace CustomerAppUI
             while (!int.TryParse(Console.ReadLine(), out selection)
                    || selection < 1
                    || selection > 5)
-            {
                 Console.WriteLine("Please select a number between 1-5");
-            }
 
             return selection;
         }

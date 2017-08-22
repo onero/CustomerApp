@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using CustomerAppBLL;
 using CustomerAppBLL.Services;
 using CustomerAppDAL;
@@ -12,7 +9,13 @@ namespace CustomerAppBLLTests
 {
     public class CustomerServiceTests
     {
-        private static readonly Customer MockCustomer = new Customer()
+        public CustomerServiceTests()
+        {
+            IRepository<Customer> mockRepo = new MockCustomerRepository();
+            _customerService = new CustomerService(mockRepo);
+        }
+
+        private static readonly Customer MockCustomer = new Customer
         {
             FirstName = "Test",
             LastName = "Testesen",
@@ -20,38 +23,6 @@ namespace CustomerAppBLLTests
         };
 
         private readonly IService<Customer> _customerService;
-
-        public CustomerServiceTests()
-        {
-            IRepository<Customer> mockRepo = new MockCustomerRepository();
-            _customerService = new CustomerService(mockRepo);
-        }
-
-        [Fact]
-        public void TestGetAll()
-        {
-            var customers = _customerService.GetAll();
-
-            Assert.NotNull(customers);
-        }
-
-        [Fact]
-        public void TestGetById()
-        {
-            var createdCustomer = _customerService.Create(MockCustomer);
-
-            var customerFromSearch = _customerService.GetById(createdCustomer.Id);
-
-            Assert.Equal(createdCustomer, customerFromSearch);
-        }
-
-        [Fact]
-        public void TestCreateSuccess()
-        {
-            var createdCustomer = _customerService.Create(MockCustomer);
-
-            Assert.NotNull(createdCustomer);
-        }
 
         [Fact]
         public void TestCreateDuplicateFail()
@@ -72,6 +43,14 @@ namespace CustomerAppBLLTests
             Assert.Null(createdCustomer);
         }
 
+        [Fact]
+        public void TestCreateSuccess()
+        {
+            var createdCustomer = _customerService.Create(MockCustomer);
+
+            Assert.NotNull(createdCustomer);
+        }
+
 
         [Fact]
         public void TestDeleteSuccess()
@@ -81,6 +60,24 @@ namespace CustomerAppBLLTests
             var deleteSucceeded = _customerService.Delete(newPerson.Id);
 
             Assert.True(deleteSucceeded);
+        }
+
+        [Fact]
+        public void TestGetAll()
+        {
+            var customers = _customerService.GetAll();
+
+            Assert.NotNull(customers);
+        }
+
+        [Fact]
+        public void TestGetById()
+        {
+            var createdCustomer = _customerService.Create(MockCustomer);
+
+            var customerFromSearch = _customerService.GetById(createdCustomer.Id);
+
+            Assert.Equal(createdCustomer, customerFromSearch);
         }
     }
 }

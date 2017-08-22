@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CustomerAppEntity;
+﻿using System.Collections.Generic;
 
 namespace CustomerAppDAL
 {
     /// <summary>
-    /// Interface for CRUD operations on a DB
+    ///     Interface for CRUD operations on a DB
     /// </summary>
     public interface IRepository<TEntity>
     {
