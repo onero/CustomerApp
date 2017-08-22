@@ -7,6 +7,10 @@ install:
 script:
 - dotnet build
 - dotnet test CustomerAppBLLTests/CustomerAppBLLTests.csproj
+branches:
+  only:
+  - master
+  - development
 notifications:
   email:
     on_success: never # default: change
