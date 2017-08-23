@@ -9,6 +9,8 @@ namespace CustomerAppBLLTests
 {
     public class CustomerServiceTests
     {
+        private readonly IService<Customer> _customerService;
+
         public CustomerServiceTests()
         {
             IRepository<Customer> mockRepo = new MockCustomerRepository();
@@ -21,8 +23,6 @@ namespace CustomerAppBLLTests
             LastName = "Testesen",
             Address = "Secret"
         };
-
-        private readonly IService<Customer> _customerService;
 
         [Fact]
         public void TestCreateDuplicateFail()
