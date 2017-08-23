@@ -17,7 +17,7 @@ namespace CustomerAppDAL.Repositories
         public Customer Create(Customer customerToCreate)
         {
             _context.Customers.Add(customerToCreate);
-            //TODO ALH: Move to UOW!
+            //TODO ALH: Move to UOW! 
             _context.SaveChanges();
             return customerToCreate;
         }
