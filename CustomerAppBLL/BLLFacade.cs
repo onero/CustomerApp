@@ -8,6 +8,6 @@ namespace CustomerAppBLL
     public class BLLFacade
     {
         public IService<Customer> CustomerService =>
-            new CustomerService(new UnitOfWork());
+            new CustomerService(new DALFacade().UnitOfWork);
     }
 }

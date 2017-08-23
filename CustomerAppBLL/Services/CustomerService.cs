@@ -56,10 +56,5 @@ namespace CustomerAppBLL.Services
                 return customerDeleted;
             }
         }
-
-        public Customer Update(Customer updatedCustomer)
-        {
-            throw new NotImplementedException("Remember to implement this!");
-        }
     }
 }
