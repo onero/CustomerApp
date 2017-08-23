@@ -1,5 +1,6 @@
 ﻿using CustomerAppBLL.Services;
 using CustomerAppDAL;
+using CustomerAppDAL.UnitOfWork;
 using CustomerAppEntity;
 
 namespace CustomerAppBLL
@@ -7,6 +8,6 @@ namespace CustomerAppBLL
     public class BLLFacade
     {
         public IService<Customer> CustomerService =>
-            new CustomerService();
+            new CustomerService(new UnitOfWork());
     }
 }

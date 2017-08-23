@@ -7,6 +7,6 @@ namespace CustomerAppDAL
     {
         IRepository<Customer> CustomerRepository { get; }
 
-        int Save();
+        void Save();
     }
 }

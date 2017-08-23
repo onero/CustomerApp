@@ -6,9 +6,9 @@ namespace CustomerAppDAL
     {
 
         //public IRepository<Customer> CustomerRepository => 
-        //    new CustomerRepositoryEFMemory(
+        //    new CustomerRepository(
         //        new InMemoryContext());
 
-        public IUnitOfWork UnitOfWork => new UnitOfWork.UnitOfWork(new InMemoryContext());
+        public IUnitOfWork UnitOfWork => new UnitOfWork.UnitOfWork();
     }
 }

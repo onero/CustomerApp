@@ -34,7 +34,6 @@ namespace CustomerAppDAL.Repositories
         {
             var customer = GetById(id);
             _context.Customers.Remove(customer);
-            _context.SaveChanges();
             return true;
         }
     }

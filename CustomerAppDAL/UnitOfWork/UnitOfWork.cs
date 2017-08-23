@@ -11,9 +11,9 @@ namespace CustomerAppDAL.UnitOfWork
 
         public IRepository<Customer> CustomerRepository { get; }
 
-        public UnitOfWork(InMemoryContext context)
+        public UnitOfWork()
         {
-            _context = context;
+            _context = new InMemoryContext();
             CustomerRepository = new CustomerRepositoryEFMemory(_context);
         }
 
@@ -22,9 +22,9 @@ namespace CustomerAppDAL.UnitOfWork
             _context.Dispose();
         }
 
-        public int Save()
+        public void Save()
         {
-            return _context.SaveChanges();
+            _context.SaveChanges();
         }
     }
 }
