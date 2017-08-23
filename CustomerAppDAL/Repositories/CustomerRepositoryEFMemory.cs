@@ -5,7 +5,7 @@ using CustomerAppEntity;
 
 namespace CustomerAppDAL.Repositories
 {
-    public class CustomerRepositoryEFMemory : IRepository<Customer>
+    class CustomerRepositoryEFMemory : IRepository<Customer>
     {
         private readonly InMemoryContext _context;
 
