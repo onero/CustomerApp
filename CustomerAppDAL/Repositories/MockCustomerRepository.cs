@@ -9,7 +9,7 @@ namespace CustomerAppDAL.Repositories
     {
         #region fakeDB
 
-        private int _id = 1;
+        private static int _id = 1;
 
         private readonly List<Customer> _customers = new List<Customer>
         {
