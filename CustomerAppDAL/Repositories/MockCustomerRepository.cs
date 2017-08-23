@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using CustomerAppEntity;
 
@@ -6,6 +7,29 @@ namespace CustomerAppDAL.Repositories
 {
     public class MockCustomerRepository : IRepository<Customer>
     {
+        #region fakeDB
+
+        private int _id = 1;
+
+        private readonly List<Customer> _customers = new List<Customer>
+        {
+            new Customer
+            {
+                FirstName = "Bob",
+                LastName = "Dylan",
+                Address = "BongoStreet 202"
+            },
+
+            new Customer
+            {
+                FirstName = "Lars",
+                LastName = "Bilde",
+                Address = "Ostestrasse 202"
+            }
+        };
+
+        #endregion
+
         public Customer Create(Customer customerToCreate)
         {
             if (CustomerExists(customerToCreate)) return null;
@@ -54,28 +78,5 @@ namespace CustomerAppDAL.Repositories
                 c.LastName.Equals(customerToCreate.LastName) &&
                 c.Address.Equals(customerToCreate.Address));
         }
-
-        #region FakeDB
-
-        private int _id = 1;
-
-        private readonly List<Customer> _customers = new List<Customer>
-        {
-            new Customer
-            {
-                FirstName = "Bob",
-                LastName = "Dylan",
-                Address = "BongoStreet 202"
-            },
-
-            new Customer
-            {
-                FirstName = "Lars",
-                LastName = "Bilde",
-                Address = "Ostestrasse 202"
-            }
-        };
-
-        #endregion
     }
 }

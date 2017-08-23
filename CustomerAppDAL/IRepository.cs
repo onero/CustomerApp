@@ -7,7 +7,7 @@ namespace CustomerAppDAL
     /// </summary>
     public interface IRepository<TEntity>
     {
-        TEntity Create(TEntity entityToCreate);
+        TEntity Create(TEntity customerToCreate);
 
         IEnumerable<TEntity> GetAll();
 
