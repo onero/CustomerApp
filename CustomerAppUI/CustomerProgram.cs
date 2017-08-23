@@ -45,7 +45,7 @@ namespace CustomerAppUI
                     break;
                 case 4:
                     ListCustomers();
-                    EditCustomer();
+                    Console.WriteLine("Feature not yet implemented!");
                     break;
                 case 5:
                     _userIsDone = true;
@@ -60,20 +60,7 @@ namespace CustomerAppUI
         /// </summary>
         private static void EditCustomer()
         {
-            var customer = FindCustomerById();
-            if (customer != null)
-            {
-                Console.Write("FirstName: ");
-                customer.FirstName = Console.ReadLine();
-                Console.Write("LastName: ");
-                customer.LastName = Console.ReadLine();
-                Console.Write("Address: ");
-                customer.Address = Console.ReadLine();
-            }
-            else
-            {
-                Console.WriteLine("Customer not Found!");
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>

@@ -5,7 +5,8 @@ namespace CustomerAppDAL
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<Customer> CustomerRepository();
-        void Save();
+        IRepository<Customer> CustomerRepository { get; }
+
+        int Save();
     }
 }

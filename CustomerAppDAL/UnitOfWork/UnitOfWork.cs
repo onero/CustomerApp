@@ -5,21 +5,26 @@ using CustomerAppEntity;
 
 namespace CustomerAppDAL.UnitOfWork
 {
-    class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
-        private readonly InMemoryContext _context = new InMemoryContext();
-        public IRepository<Customer> CustomerRepository()=> 
-            new CustomerRepositoryEFMemory(_context);
+        private readonly InMemoryContext _context;
 
-        
+        public IRepository<Customer> CustomerRepository { get; }
+
+        public UnitOfWork(InMemoryContext context)
+        {
+            _context = context;
+            CustomerRepository = new CustomerRepositoryEFMemory(_context);
+        }
+
         public void Dispose()
         {
             _context.Dispose();
         }
 
-        public void Save()
+        public int Save()
         {
-            _context.SaveChanges();
+            return _context.SaveChanges();
         }
     }
 }

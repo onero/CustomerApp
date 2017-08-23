@@ -5,7 +5,7 @@ namespace CustomerAppDAL
     /// <summary>
     ///     Interface for CRUD operations on a DB
     /// </summary>
-    public interface IRepository<TEntity>
+    public interface IRepository<TEntity> where TEntity : class
     {
         TEntity Create(TEntity customerToCreate);
 
