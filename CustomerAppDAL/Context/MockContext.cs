@@ -3,7 +3,7 @@ using CustomerAppEntity;
 
 namespace CustomerAppDAL.Context
 {
-    public class MockContext
+    internal class MockContext
     {
         public readonly List<Customer> Customers = new List<Customer>
         {

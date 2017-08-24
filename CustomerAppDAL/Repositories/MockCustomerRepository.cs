@@ -6,7 +6,7 @@ using CustomerAppEntity;
 
 namespace CustomerAppDAL.Repositories
 {
-    public class MockCustomerRepository : IRepository<Customer>
+    internal class MockCustomerRepository : IRepository<Customer>
     {
         private static int _id;
         private readonly MockContext _mockContext;
