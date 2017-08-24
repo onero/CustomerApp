@@ -7,6 +7,6 @@ namespace CustomerAppDAL
 {
     public class DALFacade : IDALFacade
     {
-        public IUnitOfWork UnitOfWork => new UnitOfWorkMem();
+        public IUnitOfWork UnitOfWork => new UnitOfWorkMem(new InMemoryContext());
     }
 }

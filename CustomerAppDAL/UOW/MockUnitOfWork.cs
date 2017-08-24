@@ -3,7 +3,7 @@ using CustomerAppEntity;
 
 namespace CustomerAppDAL.UOW
 {
-    public class MockUnitOfWork : IUnitOfWork
+    internal class MockUnitOfWork : IUnitOfWork
     {
         public IRepository<Customer> CustomerRepository { get; }
 

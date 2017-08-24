@@ -4,15 +4,16 @@ using CustomerAppEntity;
 
 namespace CustomerAppDAL.UOW
 {
-    public class UnitOfWorkMem : IUnitOfWork
+    internal class UnitOfWorkMem : IUnitOfWork
     {
         private readonly InMemoryContext _context;
+
         public IRepository<Customer> CustomerRepository { get; }
 
 
-        public UnitOfWorkMem()
+        public UnitOfWorkMem(InMemoryContext context)
         {
-            _context = new InMemoryContext();
+            _context = context;
             CustomerRepository = new CustomerRepositoryEFMemory(_context);
         }
 
