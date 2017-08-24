@@ -1,34 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using CustomerAppDAL.Context;
 using CustomerAppEntity;
 
 namespace CustomerAppDAL.Repositories
 {
-    public class MockCustomerRepository : IRepository<Customer>
+    internal class MockCustomerRepository : IRepository<Customer>
     {
-        #region fakeDB
+        private static int _id;
+        private readonly MockContext _mockContext;
 
-        private static int _id = 1;
-
-        private readonly List<Customer> _customers = new List<Customer>
+        public MockCustomerRepository()
         {
-            new Customer
-            {
-                FirstName = "Bob",
-                LastName = "Dylan",
-                Address = "BongoStreet 202"
-            },
-
-            new Customer
-            {
-                FirstName = "Lars",
-                LastName = "Bilde",
-                Address = "Ostestrasse 202"
-            }
-        };
-
-        #endregion
+            _mockContext = new MockContext();
+            _id = _mockContext.Customers.Count;
+        }
 
         public Customer Create(Customer customerToCreate)
         {
@@ -42,25 +29,25 @@ namespace CustomerAppDAL.Repositories
                 LastName = customerToCreate.LastName,
                 Address = customerToCreate.Address
             };
-            _customers.Add(newCustomer);
+            _mockContext.Customers.Add(newCustomer);
             return newCustomer;
         }
 
         public IEnumerable<Customer> GetAll()
         {
-            return new List<Customer>(_customers);
+            return new List<Customer>(_mockContext.Customers);
         }
 
         public Customer GetById(int id)
         {
-            return _customers.FirstOrDefault(c => c.Id == id);
+            return _mockContext.Customers.FirstOrDefault(c => c.Id == id);
         }
 
         public bool Delete(int id)
         {
             var customerToDelete = GetById(id);
             if (customerToDelete == null) return false;
-            _customers.Remove(customerToDelete);
+            _mockContext.Customers.Remove(customerToDelete);
             return true;
         }
 
@@ -73,7 +60,7 @@ namespace CustomerAppDAL.Repositories
 
         private bool CustomerExists(Customer customerToCreate)
         {
-            return _customers.Exists(c =>
+            return _mockContext.Customers.Exists(c =>
                 c.FirstName.Equals(customerToCreate.FirstName) &&
                 c.LastName.Equals(customerToCreate.LastName) &&
                 c.Address.Equals(customerToCreate.Address));

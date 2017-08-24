@@ -1,13 +1,12 @@
 ﻿using CustomerAppDAL.Context;
 using CustomerAppDAL.Repositories;
+using CustomerAppDAL.UOW;
 using CustomerAppEntity;
 
 namespace CustomerAppDAL
 {
-    public class DALFacade
+    public class DALFacade : IDALFacade
     {
-        public IRepository<Customer> CustomerRepository => 
-            new CustomerRepositoryEFMemory(
-                new InMemoryContext());
+        public IUnitOfWork UnitOfWork => new UnitOfWorkMem(new InMemoryContext());
     }
 }
