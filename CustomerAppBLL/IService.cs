@@ -14,5 +14,7 @@ namespace CustomerAppBLL
         TEntity GetById(int id);
 
         bool Delete(int id);
+
+        TEntity Update(TEntity entityToUpdate);
     }
 }

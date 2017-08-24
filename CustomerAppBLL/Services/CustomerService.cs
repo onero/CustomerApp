@@ -7,42 +7,63 @@ namespace CustomerAppBLL.Services
 {
     public class CustomerService : IService<Customer>
     {
-        private readonly IRepository<Customer> _repo;
-
-        public CustomerService(IRepository<Customer> repo)
+        private readonly DALFacade _dalFacade;
+        public CustomerService(DALFacade facade)
         {
-            _repo = repo;
+            _dalFacade = facade;
         }
 
         public Customer Create(Customer customerToCreate)
         {
-            return _repo.Create(customerToCreate);
+            using (var uow = _dalFacade.UnitOfWork)
+            {
+                var newCustomer = uow.CustomerRepository.Create(customerToCreate);
+                uow.Complete();
+                return newCustomer;
+            }
         }
 
         public IEnumerable<Customer> GetAll()
         {
-            return _repo.GetAll();
+            using (var uow = _dalFacade.UnitOfWork)
+            {
+                return uow.CustomerRepository.GetAll();
+            }
         }
 
         public Customer GetById(int id)
         {
-            return _repo.GetById(id);
+            using (var uow = _dalFacade.UnitOfWork)
+            {
+                return uow.CustomerRepository.GetById(id);
+            }
         }
 
         public bool Delete(int id)
         {
-            return _repo.Delete(id);
+            using (var uow = _dalFacade.UnitOfWork)
+            {
+                var customerDeleted = uow.CustomerRepository.Delete(id);
+                uow.Complete();
+                return customerDeleted;
+            }
         }
 
         public Customer Update(Customer updatedCustomer)
         {
-            var customerFromDb = GetById(updatedCustomer.Id);
-            if (customerFromDb == null) throw new InvalidOperationException("Customer doesn't exist in DB");
+            using (var uow = _dalFacade.UnitOfWork)
+            {
+                var customerFromDb = uow.CustomerRepository.GetById(updatedCustomer.Id);
+                if (customerFromDb == null) throw new InvalidOperationException("Customer doesn't exist in DB");
 
-            customerFromDb.FirstName = updatedCustomer.FirstName;
-            customerFromDb.LastName = updatedCustomer.LastName;
-            customerFromDb.Address = updatedCustomer.Address;
-            return customerFromDb;
+                customerFromDb.FirstName = updatedCustomer.FirstName;
+                customerFromDb.LastName = updatedCustomer.LastName;
+                customerFromDb.Address = updatedCustomer.Address;
+                uow.Complete();
+                return customerFromDb;
+
+            }
+            
         }
     }
 }
