@@ -69,6 +69,7 @@ namespace CustomerAppUI
                 customer.LastName = Console.ReadLine();
                 Console.Write("Address: ");
                 customer.Address = Console.ReadLine();
+                BLLFacade.CustomerService.Update(customer);
             }
             else
             {

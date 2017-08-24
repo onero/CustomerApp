@@ -6,6 +6,6 @@ namespace CustomerAppBLL
 {
     public class BLLFacade
     {
-        public IService<Customer> CustomerService => new CustomerService(new DALFacade().CustomerRepository);
+        public IService<Customer> CustomerService => new CustomerService(new DALFacade());
     }
 }

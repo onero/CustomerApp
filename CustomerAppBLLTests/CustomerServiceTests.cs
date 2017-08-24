@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CustomerAppBLL;
 using CustomerAppBLL.Services;
 using CustomerAppDAL;
@@ -13,8 +14,8 @@ namespace CustomerAppBLLTests
 
         public CustomerServiceTests()
         {
-            IRepository<Customer> mockRepo = new MockCustomerRepository();
-            _customerService = new CustomerService(mockRepo);
+            IDALFacade dalFacade = new MockDALFacade();
+            _customerService = new CustomerService(dalFacade);
         }
 
         private static readonly Customer MockCustomer = new Customer
@@ -27,10 +28,29 @@ namespace CustomerAppBLLTests
         [Fact]
         public void TestCreateDuplicateFail()
         {
-            var created1 = _customerService.Create(MockCustomer);
-            var created2 = _customerService.Create(MockCustomer);
+            var listOfCustomers = new List<Customer>()
+            {
+                MockCustomer,
+                MockCustomer
+            };
 
-            Assert.Null(created2);
+            var createdCustomers = _customerService.CreateAll(listOfCustomers);
+
+            Assert.Null(createdCustomers[1]);
+        }
+
+        [Fact]
+        public void TestCreateAllSuccess()
+        {
+            var listOfNewCustomers = new List<Customer>()
+            {
+                MockCustomer,
+                new Customer(){FirstName = "Test2", LastName = "Testesen", Address = "Test"}
+            };
+
+            var createdCustomers = _customerService.CreateAll(listOfNewCustomers);
+
+            Assert.False(createdCustomers.Contains(null));
         }
 
         [Fact]
@@ -55,9 +75,7 @@ namespace CustomerAppBLLTests
         [Fact]
         public void TestDeleteSuccess()
         {
-            var newPerson = _customerService.Create(MockCustomer);
-
-            var deleteSucceeded = _customerService.Delete(newPerson.Id);
+            var deleteSucceeded = _customerService.Delete(1);
 
             Assert.True(deleteSucceeded);
         }
@@ -73,11 +91,9 @@ namespace CustomerAppBLLTests
         [Fact]
         public void TestGetById()
         {
-            var createdCustomer = _customerService.Create(MockCustomer);
+            var customerFromSearch = _customerService.GetById(1);
 
-            var customerFromSearch = _customerService.GetById(createdCustomer.Id);
-
-            Assert.Equal(createdCustomer, customerFromSearch);
+            Assert.NotNull(customerFromSearch);
         }
     }
 }
