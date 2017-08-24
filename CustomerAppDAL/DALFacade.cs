@@ -5,7 +5,7 @@ using CustomerAppEntity;
 
 namespace CustomerAppDAL
 {
-    public class DALFacade
+    public class DALFacade : IDALFacade
     {
         public IUnitOfWork UnitOfWork => new UnitOfWorkMem();
     }

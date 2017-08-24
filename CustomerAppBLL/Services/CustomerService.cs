@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using CustomerAppDAL;
 using CustomerAppEntity;
 
@@ -7,8 +9,9 @@ namespace CustomerAppBLL.Services
 {
     public class CustomerService : IService<Customer>
     {
-        private readonly DALFacade _dalFacade;
-        public CustomerService(DALFacade facade)
+        private readonly IDALFacade _dalFacade;
+
+        public CustomerService(IDALFacade facade)
         {
             _dalFacade = facade;
         }
@@ -20,6 +23,21 @@ namespace CustomerAppBLL.Services
                 var newCustomer = uow.CustomerRepository.Create(customerToCreate);
                 uow.Complete();
                 return newCustomer;
+            }
+        }
+
+        public IList<Customer> CreateAll(IList<Customer> customers)
+        {
+            using (var uow = _dalFacade.UnitOfWork)
+            {
+                var listOfCustomers = new List<Customer>();
+                foreach (var customer in customers)
+                {
+                    var createdCustomer = uow.CustomerRepository.Create(customer);
+                    listOfCustomers.Add(createdCustomer);
+                }
+                uow.Complete();
+                return listOfCustomers;
             }
         }
 
