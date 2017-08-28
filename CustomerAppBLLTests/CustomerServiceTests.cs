@@ -25,75 +25,75 @@ namespace CustomerAppBLLTests
             Address = "Secret"
         };
 
-        [Fact]
-        public void TestCreateAllSuccess()
-        {
-            var listOfNewCustomers = new List<CustomerBO>
-            {
-                MockCustomer,
-                new CustomerBO {FirstName = "Test2", LastName = "Testesen", Address = "Test"}
-            };
+        //[Fact]
+        //public void TestCreateAllSuccess()
+        //{
+        //    var listOfNewCustomers = new List<CustomerBO>
+        //    {
+        //        MockCustomer,
+        //        new CustomerBO {FirstName = "Test2", LastName = "Testesen", Address = "Test"}
+        //    };
 
-            var createdCustomers = _customerService.CreateAll(listOfNewCustomers);
+        //    var createdCustomers = _customerService.CreateAll(listOfNewCustomers);
 
-            Assert.False(createdCustomers.Contains(null));
-        }
+        //    Assert.False(createdCustomers.Contains(null));
+        //}
 
-        [Fact]
-        public void TestCreateDuplicateFail()
-        {
-            var listOfCustomers = new List<CustomerBO>
-            {
-                MockCustomer,
-                MockCustomer
-            };
+        //[Fact]
+        //public void TestCreateDuplicateFail()
+        //{
+        //    var listOfCustomers = new List<CustomerBO>
+        //    {
+        //        MockCustomer,
+        //        MockCustomer
+        //    };
 
-            var createdCustomers = _customerService.CreateAll(listOfCustomers);
+        //    var createdCustomers = _customerService.CreateAll(listOfCustomers);
 
-            Assert.Null(createdCustomers[1]);
-        }
+        //    Assert.Null(createdCustomers[1]);
+        //}
 
-        [Fact]
-        public void TestCreateEmptyFail()
-        {
-            var newCustomer = new CustomerBO();
+        //[Fact]
+        //public void TestCreateEmptyFail()
+        //{
+        //    var newCustomer = new CustomerBO();
 
-            var createdCustomer = _customerService.Create(newCustomer);
+        //    var createdCustomer = _customerService.Create(newCustomer);
 
-            Assert.Null(createdCustomer);
-        }
+        //    Assert.Null(createdCustomer);
+        //}
 
-        [Fact]
-        public void TestCreateSuccess()
-        {
-            var createdCustomer = _customerService.Create(MockCustomer);
+        //[Fact]
+        //public void TestCreateSuccess()
+        //{
+        //    var createdCustomer = _customerService.Create(MockCustomer);
 
-            Assert.NotNull(createdCustomer);
-        }
+        //    Assert.NotNull(createdCustomer);
+        //}
 
 
-        [Fact]
-        public void TestDeleteSuccess()
-        {
-            var deleteSucceeded = _customerService.Delete(1);
+        //[Fact]
+        //public void TestDeleteSuccess()
+        //{
+        //    var deleteSucceeded = _customerService.Delete(1);
 
-            Assert.True(deleteSucceeded);
-        }
+        //    Assert.True(deleteSucceeded);
+        //}
 
-        [Fact]
-        public void TestGetAll()
-        {
-            var customers = _customerService.GetAll();
+        //[Fact]
+        //public void TestGetAll()
+        //{
+        //    var customers = _customerService.GetAll();
 
-            Assert.NotNull(customers);
-        }
+        //    Assert.NotNull(customers);
+        //}
 
-        [Fact]
-        public void TestGetById()
-        {
-            var customerFromSearch = _customerService.GetById(1);
+        //[Fact]
+        //public void TestGetById()
+        //{
+        //    var customerFromSearch = _customerService.GetById(1);
 
-            Assert.NotNull(customerFromSearch);
-        }
+        //    Assert.NotNull(customerFromSearch);
+        //}
     }
 }
