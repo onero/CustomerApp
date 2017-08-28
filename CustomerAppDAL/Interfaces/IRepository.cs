@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CustomerAppDAL
+namespace CustomerAppDAL.Interfaces
 {
     /// <summary>
     ///     Interface for CRUD operations on a DB

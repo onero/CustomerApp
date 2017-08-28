@@ -1,24 +1,24 @@
 using System.Collections.Generic;
 using CustomerAppBLL;
+using CustomerAppBLL.BusinessObjects;
 using CustomerAppBLL.Services;
 using CustomerAppDAL;
-using CustomerAppDAL.Repositories;
-using CustomerAppEntity;
+using CustomerAppDAL.Entities;
 using Xunit;
 
 namespace CustomerAppBLLTests
 {
     public class CustomerServiceTests
     {
-        private readonly IService<Customer> _customerService;
-
         public CustomerServiceTests()
         {
             IDALFacade dalFacade = new MockDALFacade();
             _customerService = new CustomerService(dalFacade);
         }
 
-        private static readonly Customer MockCustomer = new Customer
+        private readonly IService<CustomerBO> _customerService;
+
+        private static readonly CustomerBO MockCustomer = new CustomerBO
         {
             FirstName = "Test",
             LastName = "Testesen",
@@ -26,9 +26,23 @@ namespace CustomerAppBLLTests
         };
 
         [Fact]
+        public void TestCreateAllSuccess()
+        {
+            var listOfNewCustomers = new List<CustomerBO>
+            {
+                MockCustomer,
+                new CustomerBO {FirstName = "Test2", LastName = "Testesen", Address = "Test"}
+            };
+
+            var createdCustomers = _customerService.CreateAll(listOfNewCustomers);
+
+            Assert.False(createdCustomers.Contains(null));
+        }
+
+        [Fact]
         public void TestCreateDuplicateFail()
         {
-            var listOfCustomers = new List<Customer>()
+            var listOfCustomers = new List<CustomerBO>
             {
                 MockCustomer,
                 MockCustomer
@@ -40,23 +54,9 @@ namespace CustomerAppBLLTests
         }
 
         [Fact]
-        public void TestCreateAllSuccess()
-        {
-            var listOfNewCustomers = new List<Customer>()
-            {
-                MockCustomer,
-                new Customer(){FirstName = "Test2", LastName = "Testesen", Address = "Test"}
-            };
-
-            var createdCustomers = _customerService.CreateAll(listOfNewCustomers);
-
-            Assert.False(createdCustomers.Contains(null));
-        }
-
-        [Fact]
         public void TestCreateEmptyFail()
         {
-            var newCustomer = new Customer();
+            var newCustomer = new CustomerBO();
 
             var createdCustomer = _customerService.Create(newCustomer);
 

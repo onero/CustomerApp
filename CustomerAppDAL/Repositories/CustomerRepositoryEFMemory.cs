@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CustomerAppDAL.Context;
-using CustomerAppEntity;
+using CustomerAppDAL.Entities;
+using CustomerAppDAL.Interfaces;
 
 namespace CustomerAppDAL.Repositories
 {
@@ -22,7 +23,8 @@ namespace CustomerAppDAL.Repositories
 
         public IEnumerable<Customer> GetAll()
         {
-            return _context.Customers.ToList();
+            var customers = _context.Customers.ToList();
+            return customers;
         }
 
         public Customer GetById(int id)

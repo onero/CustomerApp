@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using CustomerAppBLL.BusinessObjects;
 using CustomerAppDAL;
-using CustomerAppEntity;
+using CustomerAppDAL.Entities;
 
 namespace CustomerAppBLL.Services
 {
-    public class CustomerService : IService<Customer>
+    public class CustomerService : IService<CustomerBO>
     {
         private readonly IDALFacade _dalFacade;
 
@@ -16,44 +16,45 @@ namespace CustomerAppBLL.Services
             _dalFacade = facade;
         }
 
-        public Customer Create(Customer customerToCreate)
+        public CustomerBO Create(CustomerBO customerToCreate)
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
-                var newCustomer = uow.CustomerRepository.Create(customerToCreate);
+                var newCustomer = uow.CustomerRepository.Create(Convert(customerToCreate));
                 uow.Complete();
-                return newCustomer;
+                return Convert(newCustomer);
             }
         }
 
-        public IList<Customer> CreateAll(IList<Customer> customers)
+        public IList<CustomerBO> CreateAll(IList<CustomerBO> customers)
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
-                var listOfCustomers = new List<Customer>();
+                var listOfCustomers = new List<CustomerBO>();
                 foreach (var customer in customers)
                 {
-                    var createdCustomer = uow.CustomerRepository.Create(customer);
-                    listOfCustomers.Add(createdCustomer);
+                    var createdCustomer = uow.CustomerRepository.Create(Convert(customer));
+                    listOfCustomers.Add(Convert(createdCustomer));
                 }
                 uow.Complete();
                 return listOfCustomers;
             }
         }
 
-        public IEnumerable<Customer> GetAll()
+        public IEnumerable<CustomerBO> GetAll()
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
-                return uow.CustomerRepository.GetAll();
+                // Customer -> CustomerBO
+                return uow.CustomerRepository.GetAll().Select(Convert).ToList();
             }
         }
 
-        public Customer GetById(int id)
+        public CustomerBO GetById(int id)
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
-                return uow.CustomerRepository.GetById(id);
+                return Convert(uow.CustomerRepository.GetById(id));
             }
         }
 
@@ -67,7 +68,7 @@ namespace CustomerAppBLL.Services
             }
         }
 
-        public Customer Update(Customer updatedCustomer)
+        public CustomerBO Update(CustomerBO updatedCustomer)
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
@@ -78,10 +79,40 @@ namespace CustomerAppBLL.Services
                 customerFromDb.LastName = updatedCustomer.LastName;
                 customerFromDb.Address = updatedCustomer.Address;
                 uow.Complete();
-                return customerFromDb;
-
+                return Convert(customerFromDb);
             }
-            
+        }
+
+        /// <summary>
+        /// Convert CustomerBO to Customer
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>Customer</returns>
+        private Customer Convert(CustomerBO customer)
+        {
+            return new Customer()
+            {
+                Id = customer.Id,
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                Address = customer.Address
+            };
+        }
+
+        /// <summary>
+        /// Convert Customer to CustomerBO
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>CustomerBO</returns>
+        private CustomerBO Convert(Customer customer)
+        {
+            return new CustomerBO()
+            {
+                Id = customer.Id,
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                Address = customer.Address
+            };
         }
     }
 }

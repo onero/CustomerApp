@@ -1,4 +1,5 @@
-﻿using CustomerAppDAL.UOW;
+﻿using CustomerAppDAL.Interfaces;
+using CustomerAppDAL.UOW;
 
 namespace CustomerAppDAL
 {

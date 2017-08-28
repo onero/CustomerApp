@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerAppUI", "CustomerAppUI\CustomerAppUI.csproj", "{A0644E00-F4BA-42A3-B51B-2BADE0E048FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerAppBLL", "CustomerAppBLL\CustomerAppBLL.csproj", "{69319071-2A55-45FE-AE60-10EED2B0B472}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerAppDAL", "CustomerAppDAL\CustomerAppDAL.csproj", "{2C4E8274-9B9F-4299-866F-A5A4F4DA914E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerAppEntity", "CustomerAppEntity\CustomerAppEntity.csproj", "{71E970C7-70EC-46DC-B261-EF706E0426DE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerAppBLLTests", "CustomerAppBLLTests\CustomerAppBLLTests.csproj", "{AD981BD5-941B-429C-A0CD-F8A01D3756D7}"
 EndProject
@@ -31,10 +29,6 @@ Global
 		{2C4E8274-9B9F-4299-866F-A5A4F4DA914E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C4E8274-9B9F-4299-866F-A5A4F4DA914E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C4E8274-9B9F-4299-866F-A5A4F4DA914E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71E970C7-70EC-46DC-B261-EF706E0426DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71E970C7-70EC-46DC-B261-EF706E0426DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71E970C7-70EC-46DC-B261-EF706E0426DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71E970C7-70EC-46DC-B261-EF706E0426DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD981BD5-941B-429C-A0CD-F8A01D3756D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD981BD5-941B-429C-A0CD-F8A01D3756D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD981BD5-941B-429C-A0CD-F8A01D3756D7}.Release|Any CPU.ActiveCfg = Release|Any CPU

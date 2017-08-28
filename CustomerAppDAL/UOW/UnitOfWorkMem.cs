@@ -1,6 +1,7 @@
 ﻿using CustomerAppDAL.Context;
+using CustomerAppDAL.Entities;
+using CustomerAppDAL.Interfaces;
 using CustomerAppDAL.Repositories;
-using CustomerAppEntity;
 
 namespace CustomerAppDAL.UOW
 {
@@ -8,19 +9,19 @@ namespace CustomerAppDAL.UOW
     {
         private readonly InMemoryContext _context;
 
-        public IRepository<Customer> CustomerRepository { get; }
 
-
-        public UnitOfWorkMem(InMemoryContext context)
+        public UnitOfWorkMem()
         {
-            _context = context;
+            _context = new InMemoryContext();
             CustomerRepository = new CustomerRepositoryEFMemory(_context);
         }
+
+        public IRepository<Customer> CustomerRepository { get; }
 
         public int Complete()
         {
             // Return the number of objects written to the underlying database
-           return _context.SaveChanges();
+            return _context.SaveChanges();
         }
 
         public void Dispose()

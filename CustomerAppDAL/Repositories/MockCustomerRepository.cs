@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using CustomerAppDAL.Context;
-using CustomerAppEntity;
+using CustomerAppDAL.Entities;
+using CustomerAppDAL.Interfaces;
 
 namespace CustomerAppDAL.Repositories
 {
