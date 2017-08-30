@@ -1,59 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using CustomerAppBLL.BusinessObjects;
+using CustomerAppBLL.Converters;
 using CustomerAppDAL;
-using CustomerAppEntity;
 
 namespace CustomerAppBLL.Services
 {
-    public class CustomerService : IService<Customer>
+    public class CustomerService : IService<CustomerBO>
     {
+        private readonly CustomerConverter _converter;
         private readonly IDALFacade _dalFacade;
 
         public CustomerService(IDALFacade facade)
         {
             _dalFacade = facade;
+            _converter = new CustomerConverter();
         }
 
-        public Customer Create(Customer customerToCreate)
+        public CustomerBO Create(CustomerBO customerToCreate)
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
-                var newCustomer = uow.CustomerRepository.Create(customerToCreate);
+                var newCustomer = uow.CustomerRepository.Create(_converter.Convert(customerToCreate));
                 uow.Complete();
-                return newCustomer;
+                return _converter.Convert(newCustomer);
             }
         }
 
-        public IList<Customer> CreateAll(IList<Customer> customers)
+        public IList<CustomerBO> CreateAll(IList<CustomerBO> customers)
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
-                var listOfCustomers = new List<Customer>();
+                var listOfCustomers = new List<CustomerBO>();
                 foreach (var customer in customers)
                 {
-                    var createdCustomer = uow.CustomerRepository.Create(customer);
-                    listOfCustomers.Add(createdCustomer);
+                    var createdCustomer = uow.CustomerRepository.Create(_converter.Convert(customer));
+                    listOfCustomers.Add(_converter.Convert(createdCustomer));
                 }
                 uow.Complete();
                 return listOfCustomers;
             }
         }
 
-        public IEnumerable<Customer> GetAll()
+        public IEnumerable<CustomerBO> GetAll()
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
-                return uow.CustomerRepository.GetAll();
+                // Customer -> CustomerBO
+                return uow.CustomerRepository.GetAll().Select(_converter.Convert).ToList();
             }
         }
 
-        public Customer GetById(int id)
+        public CustomerBO GetById(int id)
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
-                return uow.CustomerRepository.GetById(id);
+                return _converter.Convert(uow.CustomerRepository.GetById(id));
             }
         }
 
@@ -67,7 +70,7 @@ namespace CustomerAppBLL.Services
             }
         }
 
-        public Customer Update(Customer updatedCustomer)
+        public CustomerBO Update(CustomerBO updatedCustomer)
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
@@ -78,10 +81,8 @@ namespace CustomerAppBLL.Services
                 customerFromDb.LastName = updatedCustomer.LastName;
                 customerFromDb.Address = updatedCustomer.Address;
                 uow.Complete();
-                return customerFromDb;
-
+                return _converter.Convert(customerFromDb);
             }
-            
         }
     }
 }

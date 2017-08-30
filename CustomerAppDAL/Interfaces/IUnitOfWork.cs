@@ -1,7 +1,7 @@
 ﻿using System;
-using CustomerAppEntity;
+using CustomerAppDAL.Entities;
 
-namespace CustomerAppDAL
+namespace CustomerAppDAL.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

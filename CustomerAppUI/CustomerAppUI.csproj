@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CustomerAppBLL\CustomerAppBLL.csproj" />
-    <ProjectReference Include="..\CustomerAppEntity\CustomerAppEntity.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
-﻿namespace CustomerAppDAL
+﻿using CustomerAppDAL.Interfaces;
+
+namespace CustomerAppDAL
 {
     public interface IDALFacade
     {

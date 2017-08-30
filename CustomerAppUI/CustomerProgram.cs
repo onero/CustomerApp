@@ -1,6 +1,6 @@
 ﻿using System;
 using CustomerAppBLL;
-using CustomerAppEntity;
+using CustomerAppBLL.BusinessObjects;
 using CustomerAppUI.Model;
 
 namespace CustomerAppUI
@@ -81,7 +81,7 @@ namespace CustomerAppUI
         ///     Prompt user for id to find customer
         /// </summary>
         /// <returns>Customer with parsed id</returns>
-        private static Customer FindCustomerById()
+        private static CustomerBO FindCustomerById()
         {
             Console.Write("Insert Customer Id: ");
             int id;
@@ -118,7 +118,7 @@ namespace CustomerAppUI
             Console.Write("Address: ");
             var address = Console.ReadLine();
 
-            var createdCustomer = BLLFacade.CustomerService.Create(new Customer
+            var createdCustomer = BLLFacade.CustomerService.Create(new CustomerBO
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -138,9 +138,9 @@ namespace CustomerAppUI
                 DisplayCustomer(customer);
         }
 
-        private static void DisplayCustomer(Customer customerToDispaly)
+        private static void DisplayCustomer(CustomerBO customerToDispaly)
         {
-            Console.WriteLine($"Id: {customerToDispaly.Id} Name: {customerToDispaly.GetFullName()} Adress: {customerToDispaly.Address}");
+            Console.WriteLine($"Id: {customerToDispaly.Id} Name: {customerToDispaly.FullName()} Adress: {customerToDispaly.Address}");
         }
 
 

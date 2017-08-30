@@ -1,11 +1,11 @@
-﻿using CustomerAppBLL.Services;
+﻿using CustomerAppBLL.BusinessObjects;
+using CustomerAppBLL.Services;
 using CustomerAppDAL;
-using CustomerAppEntity;
 
 namespace CustomerAppBLL
 {
     public class BLLFacade
     {
-        public IService<Customer> CustomerService => new CustomerService(new DALFacade());
+        public IService<CustomerBO> CustomerService => new CustomerService(new DALFacade());
     }
 }
