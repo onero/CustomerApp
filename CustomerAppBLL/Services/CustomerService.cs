@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CustomerAppBLL.BusinessObjects;
+using CustomerAppBLL.Converters;
 using CustomerAppDAL;
 using CustomerAppDAL.Entities;
 
@@ -11,18 +12,21 @@ namespace CustomerAppBLL.Services
     {
         private readonly IDALFacade _dalFacade;
 
+        private readonly CustomerConverter _converter;
+
         public CustomerService(IDALFacade facade)
         {
             _dalFacade = facade;
+            _converter = new CustomerConverter();
         }
 
         public CustomerBO Create(CustomerBO customerToCreate)
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
-                var newCustomer = uow.CustomerRepository.Create(Convert(customerToCreate));
+                var newCustomer = uow.CustomerRepository.Create(_converter.Convert(customerToCreate));
                 uow.Complete();
-                return Convert(newCustomer);
+                return _converter.Convert(newCustomer);
             }
         }
 
@@ -33,8 +37,8 @@ namespace CustomerAppBLL.Services
                 var listOfCustomers = new List<CustomerBO>();
                 foreach (var customer in customers)
                 {
-                    var createdCustomer = uow.CustomerRepository.Create(Convert(customer));
-                    listOfCustomers.Add(Convert(createdCustomer));
+                    var createdCustomer = uow.CustomerRepository.Create(_converter.Convert(customer));
+                    listOfCustomers.Add(_converter.Convert(createdCustomer));
                 }
                 uow.Complete();
                 return listOfCustomers;
@@ -46,7 +50,7 @@ namespace CustomerAppBLL.Services
             using (var uow = _dalFacade.UnitOfWork)
             {
                 // Customer -> CustomerBO
-                return uow.CustomerRepository.GetAll().Select(Convert).ToList();
+                return uow.CustomerRepository.GetAll().Select(_converter.Convert).ToList();
             }
         }
 
@@ -54,7 +58,7 @@ namespace CustomerAppBLL.Services
         {
             using (var uow = _dalFacade.UnitOfWork)
             {
-                return Convert(uow.CustomerRepository.GetById(id));
+                return _converter.Convert(uow.CustomerRepository.GetById(id));
             }
         }
 
@@ -79,40 +83,10 @@ namespace CustomerAppBLL.Services
                 customerFromDb.LastName = updatedCustomer.LastName;
                 customerFromDb.Address = updatedCustomer.Address;
                 uow.Complete();
-                return Convert(customerFromDb);
+                return _converter.Convert(customerFromDb);
             }
         }
 
-        /// <summary>
-        /// Convert CustomerBO to Customer
-        /// </summary>
-        /// <param name="customer"></param>
-        /// <returns>Customer</returns>
-        private Customer Convert(CustomerBO customer)
-        {
-            return new Customer()
-            {
-                Id = customer.Id,
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                Address = customer.Address
-            };
-        }
-
-        /// <summary>
-        /// Convert Customer to CustomerBO
-        /// </summary>
-        /// <param name="customer"></param>
-        /// <returns>CustomerBO</returns>
-        private CustomerBO Convert(Customer customer)
-        {
-            return new CustomerBO()
-            {
-                Id = customer.Id,
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                Address = customer.Address
-            };
-        }
+        
     }
 }
