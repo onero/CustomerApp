@@ -4,15 +4,13 @@ using System.Linq;
 using CustomerAppBLL.BusinessObjects;
 using CustomerAppBLL.Converters;
 using CustomerAppDAL;
-using CustomerAppDAL.Entities;
 
 namespace CustomerAppBLL.Services
 {
     public class CustomerService : IService<CustomerBO>
     {
-        private readonly IDALFacade _dalFacade;
-
         private readonly CustomerConverter _converter;
+        private readonly IDALFacade _dalFacade;
 
         public CustomerService(IDALFacade facade)
         {
@@ -86,7 +84,5 @@ namespace CustomerAppBLL.Services
                 return _converter.Convert(customerFromDb);
             }
         }
-
-        
     }
 }
